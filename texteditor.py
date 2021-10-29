@@ -14,6 +14,8 @@ openfile_status = False
 #global selected variable
 global selected 
 selected=False
+global fontSize
+fontSize = 16
 
 #crete new file function
 def new_file():
@@ -120,7 +122,31 @@ def paste_function(e):
         if selected:
             position_cursor = mytext.index(INSERT)
             mytext.insert(position_cursor,selected)
-    
+# font menu functions   
+def american_typewrite():
+    global fontSize
+    mytext.config(font=("American Typewriter",fontSize))
+def helvic():
+    global fontSize
+    mytext.config(font=("Helvitica",fontSize))
+def arial():
+    global fontSize
+    mytext.config(font=("Arial Black",fontSize))
+def baskerville():
+    global fontSize
+    mytext.config(font=("Baskerville Old Face",fontSize))
+
+
+# background change menu function
+def oldyellow():
+    mytext.config(background="#FBF2AD")
+def mintblue():
+    mytext.config(background="#70E4EC")  
+def coolgreen():
+    mytext.config(background="#DAF7A6")    
+def brillentviolet():
+    mytext.config(background="#D586F1")    
+
 
 #create main frame
 myframe = Frame(root)
@@ -134,7 +160,7 @@ text_scroll.pack(side=RIGHT,fill=Y)
 horizontal_scroll = Scrollbar(myframe,orient="horizontal")
 horizontal_scroll.pack(side=BOTTOM,fill=X)
 #create text box
-mytext = Text(myframe,width=97,height =25,background="#FBF2AD",font=("Helvitica",16),border=1,selectbackground="blue",selectforeground="red",undo = True,yscrollcommand=text_scroll,wrap="none",xscrollcommand=horizontal_scroll.set)
+mytext = Text(myframe,width=97,height =25,background="#FBF2AD",font=("Helvitica",fontSize),border=1,selectbackground="#E3F990",selectforeground="#A11305",undo = True,yscrollcommand=text_scroll,wrap="none",xscrollcommand=horizontal_scroll.set)
 mytext.pack()
 
 #Configure our scroll bar
@@ -165,6 +191,26 @@ edit_menu.add_command(label="paste (cmd+v)",command=lambda:paste_function(False)
 edit_menu.add_separator()
 edit_menu.add_command(label="Undo",command= mytext.edit_undo,accelerator='(Meta_L + z)')
 edit_menu.add_command(label="Redo",command=mytext.edit_redo,accelerator="(Meta_L + y)")
+
+#view menu
+view_menu = Menu(menu_bar)
+menu_bar.add_cascade(label="View",menu=view_menu)
+#cascade menu for font
+fontmenu = Menu(view_menu)
+view_menu.add_cascade(label="Font",menu=fontmenu)
+fontmenu.add_command(label="American Typewriter",command= american_typewrite)
+fontmenu.add_command(label="Helvitica",command= helvic)
+fontmenu.add_command(label="Arial Black",command= arial)
+fontmenu.add_command(label="Baskerville Old Face",command= baskerville)
+#cascade menu for background color
+bgmenu = Menu(view_menu)
+view_menu.add_cascade(label="Background Color",menu=bgmenu)
+bgmenu.add_command(label="Old Yellow",command=oldyellow)
+bgmenu.add_command(label="Mint Blue",command=mintblue)
+bgmenu.add_command(label="cool Green",command=coolgreen)
+bgmenu.add_command(label="Brillient Violet",command=brillentviolet)
+
+
 
 #status bar
 status_bar = Label(root,text="Ready          ",anchor=E)

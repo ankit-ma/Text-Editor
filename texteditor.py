@@ -114,7 +114,8 @@ def paste_function(e):
     global selected
     #if there is keybord event
     if e:
-        selected = root.clipboard_get()
+        #selected = root.clipboard_get()
+        mytext.insert(selected)
     else:    
         if selected:
             position_cursor = mytext.index(INSERT)
@@ -129,14 +130,17 @@ myframe.pack(pady=5)
 text_scroll = Scrollbar(myframe)
 text_scroll.pack(side=RIGHT,fill=Y)
 
-
+#create x scroll bar
+horizontal_scroll = Scrollbar(myframe,orient="horizontal")
+horizontal_scroll.pack(side=BOTTOM,fill=X)
 #create text box
-mytext = Text(myframe,width=97,height =25,font=("Helvitica",16),border=2,selectbackground="blue",selectforeground="red",undo = True,yscrollcommand=text_scroll)
+mytext = Text(myframe,width=97,height =25,background="#FBF2AD",font=("Helvitica",16),border=1,selectbackground="blue",selectforeground="red",undo = True,yscrollcommand=text_scroll,wrap="none",xscrollcommand=horizontal_scroll.set)
 mytext.pack()
 
 #Configure our scroll bar
 text_scroll.config(command = mytext.yview)
-
+#configure our horizontal scroll
+horizontal_scroll.config(command=mytext.xview)
 #Create menu
 menu_bar = Menu(root)
 root.config(menu=menu_bar)
@@ -155,11 +159,12 @@ file_menu.add_command(label="Exit",command=root.quit)
 #add edit menu
 edit_menu =Menu(menu_bar)
 menu_bar.add_cascade(label="Edit",menu=edit_menu)
-edit_menu.add_command(label="cut",command=lambda:cut_function(False))
-edit_menu.add_command(label="copy",command=lambda:copy_function(False))
-edit_menu.add_command(label="paste",command=lambda:paste_function(False))
-edit_menu.add_command(label="Undo")
-edit_menu.add_command(label="Redo")
+edit_menu.add_command(label="cut   (cmd+x)",command=lambda:cut_function(False))
+edit_menu.add_command(label="copy  (cmd+c)",command=lambda:copy_function(False))
+edit_menu.add_command(label="paste (cmd+v)",command=lambda:paste_function(False))
+edit_menu.add_separator()
+edit_menu.add_command(label="Undo",command= mytext.edit_undo,accelerator='(Meta_L + z)')
+edit_menu.add_command(label="Redo",command=mytext.edit_redo,accelerator="(Meta_L + y)")
 
 #status bar
 status_bar = Label(root,text="Ready          ",anchor=E)
